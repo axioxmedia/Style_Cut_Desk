@@ -1,0 +1,11 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+httpx==0.28.1
+pydantic==2.11.7
+pywebview==5.4
+python-multipart==0.0.20
+pillow==11.3.0
+numpy==2.2.6
+rembg==2.0.67
+onnxruntime==1.22.1
+pythonnet==3.0.5; sys_platform == "win32"

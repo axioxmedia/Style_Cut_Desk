@@ -1,0 +1,17 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+build/
+dist/
+work/
+*.spec.bak
+style_cut_desk.log
+deploy_desk.log
+icon.ico
+.DS_Store
+Thumbs.db
+.idea/
