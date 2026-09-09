@@ -42,7 +42,7 @@ Local desk app that cuts an image background, then stylizes the cutout from a pr
 
 ## At a glance
 
-| Style Cut Desk v1.1 |  |
+| Style Cut Desk v1.0 |  |
 |---|---|
 | **Workflow** | Drop image → normalize PNG → auto / chroma cut → style preset → fill / plate / LUT → Save As PNG |
 | **Presets** | White stencil, black stencil, line art, silhouette, color cutout |
@@ -81,12 +81,12 @@ Need Python 3.11 or 3.12 from python.org with **Add python.exe to PATH**.
 |---|---|
 | Normalize first | JPEG / PNG / WEBP / BMP / GIF first frame / TIFF → 8-bit RGBA PNG |
 | Auto cutout | rembg + u2net when available; local edge-flood fallback otherwise |
-| Chroma key | Hex color + strength `0.001`–1.0 |
+| Chroma key | Hex color + strength `0.001`–`1.0` |
 | Preset library | Stylize the cutout after the background is gone |
 | Fill | Solid hex or keep transparency |
 | Plate / frame | Optional base image with outer padding (canvas edge) and inner padding (frame to icon) |
 | LUT | Steel / rust / night / mono / paper wash over non-transparent pixels |
-| Export caps | Hide 2048× / 4096× / 8192× when the source long side is smaller unless force-stretch is on |
+| Export caps | Hide 2048× / 4096× / 8192× when the source long side is smaller |
 | Compressed PNG | Optional `optimize` + max compress level |
 | Save As | Never overwrites the source file |
 
@@ -130,7 +130,7 @@ BG Key Desk only normalizes and cuts. Style Cut Desk keeps that cutout step, the
 <details>
 <summary>Why do high-resolution export options disappear?</summary>
 
-Caps are 512 / 1024 / 2048 / 4096 / 8192. A cap is listed only when it is less than or equal to the source long side, unless force-stretch is checked. Default is always the current processed canvas at original resolution.
+Caps are 512 / 1024 / 2048 / 4096 / 8192. A cap is listed only when it is less than or equal to the source long side. Default is always the current processed canvas at original resolution.
 
 </details>
 

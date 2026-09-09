@@ -11,7 +11,7 @@ AIO_BRAND = "Axiox Media"
 AXIOXMEDIA_MARK = "axioxmedia"
 AXIOX_PACKER_ZH = "由安溯媒体自动打包，软件名："
 AXIOX_PACKER_EN = "Packed via Axiox Media, software name: "
-AIO_SOFTWARE_NAME_ZH = "风格挖图台"
+AIO_SOFTWARE_NAME_ZH = "风格抠图台"
 AIO_SOFTWARE_NAME_EN = "Style Cut Desk"
 
 

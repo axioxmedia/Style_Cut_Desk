@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/brand/logo.png" type="image/png" />
   <title>Style Cut Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 <body class="aio-app axiox-shell">
@@ -14,8 +17,8 @@
       <div class="brand">
         <img class="mark-img" src="/brand/logo.png" alt="Axiox" />
         <div>
-          <h1 data-i18n="appTitle">风格挖图台</h1>
-          <p data-i18n="appSubtitle">先挖底，再实时调风格，最后按尺寸导出 PNG</p>
+          <h1 data-i18n="appTitle">风格抠图台</h1>
+          <p data-i18n="appSubtitle">先抠底，再套预设库，最后按尺寸导出 PNG</p>
         </div>
       </div>
       <div class="top-actions">
@@ -26,17 +29,144 @@
         <div class="chip" id="statusChip">idle</div>
       </div>
     </header>
+
     <section class="stage">
       <article class="card panel left-pane">
         <div class="kicker">Style Cut</div>
         <h2 data-i18n="formTitle">加工一张图</h2>
-        <p class="hint">完整 UI 见本地 zip / 仓库 static/index.html 最新版。</p>
+
+        <div id="cutSection">
+          <div class="drop" id="dropZone">
+            <input id="fileInput" type="file" accept="image/*" hidden />
+            <p class="drop-title" data-i18n="dropTitle">把原图拖到这里</p>
+            <p class="drop-sub" id="fileMeta" data-i18n="dropSub">或点击选择 PNG / JPG / WEBP</p>
+          </div>
+
+          <label data-i18n="cutLabel">抠底方式</label>
+          <div class="seg" id="cutMode">
+            <button type="button" class="on" data-mode="auto">Auto</button>
+            <button type="button" data-mode="chroma">Chroma</button>
+          </div>
+          <div class="chroma-only hidden" id="chromaRow">
+            <div>
+              <label for="chromaColor" data-i18n="chromaColor">色键</label>
+              <div class="color-row">
+                <input id="chromaColor" type="color" value="#00ff00" />
+                <input id="chromaHex" type="text" value="#00ff00" spellcheck="false" />
+              </div>
+            </div>
+            <div>
+              <label for="chromaStrength" data-i18n="chromaStrength">强度</label>
+              <div class="slider-row">
+                <input id="chromaStrength" type="range" min="0.001" max="1" step="0.001" value="0.001" />
+                <span class="mono-val" id="chromaStrengthVal">0.001</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="primary" id="runBtn" type="button" data-i18n="runBtn">开始抠底</button>
+        </div>
+        <button class="soft full hidden" id="reloadBtn" type="button" data-i18n="reloadBtn">重新加载图片</button>
+        <p class="hint" id="runHint"></p>
+
+        <div id="styleSection" class="post-cut hidden">
+          <div class="section-rule"></div>
+          <div class="kicker" data-i18n="styleKicker">Style</div>
+          <label data-i18n="presetLabel">风格预设</label>
+          <div class="preset-grid" id="presetGrid"></div>
+          <p class="hint" id="presetHint"></p>
+
+          <div class="split-2">
+            <div>
+              <label for="fillColor" data-i18n="fillLabel">背景填充</label>
+              <div class="color-row">
+                <input id="fillColor" type="color" value="#000000" />
+                <input id="fillHex" type="text" value="#000000" />
+              </div>
+              <label class="check">
+                <input id="fillTransparent" type="checkbox" />
+                <span data-i18n="fillTransparent">保持透明</span>
+              </label>
+            </div>
+            <div>
+              <label for="lutSelect" data-i18n="lutLabel">全局颜色 / LUT</label>
+              <select id="lutSelect"></select>
+              <div class="slider-row">
+                <input id="lutStrength" type="range" min="0" max="1" step="0.05" value="1" />
+                <span class="mono-val" id="lutStrengthVal">1.00</span>
+              </div>
+            </div>
+          </div>
+
+          <label data-i18n="plateLabel">底图 / 边框</label>
+          <div class="split-2">
+            <button class="soft" id="plateBtn" type="button" data-i18n="platePick">选择底图</button>
+            <label class="check tight">
+              <input id="plateOn" type="checkbox" />
+              <span data-i18n="plateOn">启用底图</span>
+            </label>
+          </div>
+          <input id="plateInput" type="file" accept="image/*" hidden />
+          <p class="hint" id="plateMeta"></p>
+          <div class="split-2">
+            <div>
+              <label for="padOuter" data-i18n="padOuter">外 padding（图边距）</label>
+              <input id="padOuter" type="number" min="0" max="2048" value="24" />
+            </div>
+            <div>
+              <label for="padInner" data-i18n="padInner">内 padding（框与图标）</label>
+              <input id="padInner" type="number" min="0" max="2048" value="16" />
+            </div>
+          </div>
+        </div>
+
+        <div id="exportSection" class="post-cut hidden">
+          <div class="section-rule"></div>
+          <div class="kicker" data-i18n="exportKicker">Export</div>
+          <label data-i18n="exportLabel">导出</label>
+          <select id="exportSize"></select>
+          <label class="check">
+            <input id="exportForce" type="checkbox" />
+            <span data-i18n="forceStretch">强制拉升为正方形</span>
+          </label>
+          <p class="hint" data-i18n="forceHint">勾选后可把 569×570 强行拉到 1024×1024，不再受原图长边限制。</p>
+          <label class="check">
+            <input id="exportCompress" type="checkbox" />
+            <span data-i18n="compress">压缩 PNG</span>
+          </label>
+          <button class="soft full" id="saveBtn" type="button" data-i18n="saveBtn">另存为 PNG</button>
+        </div>
       </article>
+
       <article class="card panel preview-pane">
-        <h2 data-i18n="previewTitle">结果预览</h2>
+        <div class="preview-bar">
+          <div>
+            <div class="kicker">Preview</div>
+            <h2 data-i18n="previewTitle">结果预览</h2>
+          </div>
+          <span class="live-pill hidden" id="livePill" data-i18n="liveUpdating">更新预览…</span>
+        </div>
+        <div class="view-tabs" id="previewMode">
+          <button type="button" data-view="source" class="on" data-i18n="viewSource">原始图</button>
+          <button type="button" data-view="cut" data-i18n="viewCut">抠底件</button>
+          <button type="button" data-view="styled" data-i18n="viewStyled">风格结果</button>
+        </div>
+        <div class="preview-stage" id="previewStage">
+          <img id="previewImg" alt="" hidden />
+          <p class="empty" id="previewEmpty" data-i18n="previewEmpty">还没有图片</p>
+        </div>
       </article>
     </section>
   </main>
+
+  <div class="modal hidden" id="progressModal">
+    <div class="modal-card">
+      <div class="kicker">Working</div>
+      <p id="progressLabel">…</p>
+      <div class="bar"><i id="progressBar"></i></div>
+    </div>
+  </div>
+
   <footer class="app-version" id="appVersion">v1.1.0</footer>
   <script src="/assets/app.js"></script>
 </body>
