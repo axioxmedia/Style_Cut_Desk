@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/brand/logo.png" type="image/png" />
+  <title>Style Cut Desk</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body class="aio-app axiox-shell">
+  <div class="bg-grid"></div>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img class="mark-img" src="/brand/logo.png" alt="Axiox" />
+        <div>
+          <h1 data-i18n="appTitle">风格挖图台</h1>
+          <p data-i18n="appSubtitle">先挖底，再实时调风格，最后按尺寸导出 PNG</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="lang-switch" id="uiLangSwitch">
+          <button type="button" data-ui-lang="zh">中文</button>
+          <button type="button" data-ui-lang="en">EN</button>
+        </div>
+        <div class="chip" id="statusChip">idle</div>
+      </div>
+    </header>
+    <section class="stage">
+      <article class="card panel left-pane">
+        <div class="kicker">Style Cut</div>
+        <h2 data-i18n="formTitle">加工一张图</h2>
+        <p class="hint">完整 UI 见本地 zip / 仓库 static/index.html 最新版。</p>
+      </article>
+      <article class="card panel preview-pane">
+        <h2 data-i18n="previewTitle">结果预览</h2>
+      </article>
+    </section>
+  </main>
+  <footer class="app-version" id="appVersion">v1.1.0</footer>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
